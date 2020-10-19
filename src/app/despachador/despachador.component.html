@@ -1,0 +1,65 @@
+<br>
+<br>
+<br>
+<p class="text-center titulo ml-5 ">Dalí Despachador de Procesos </p>
+<br>
+<br>
+<br>
+<div class = "input-container flex justify-between mt-3">
+      <mat-form-field appearence="outline" class = "input w-1/2 ml-5 mr-5">
+        <mat-label>
+          Tamaño de Quantum (ms)
+        </mat-label>
+        <input matInput placeholder="200" #tamQuantum>
+      </mat-form-field>
+
+      <div class="container" class = "input w-1/2 ml-5 mr-5">
+        <input type="file" name="photo" ng2FileSelect [uploader]="uploader" accept=".txt" (change)="showFile($event)" />
+      </div>
+</div>
+<div class = "input-container flex justify-between mt-5">
+  <mat-form-field appearence="outline" class = "input w-1/2 ml-5 mr-5">
+    <mat-label>
+      Número de Microprocesadores
+    </mat-label>
+    <input matInput placeholder="3" #microprocesadores>
+  </mat-form-field>
+  <mat-form-field appearence="outline" class = "input w-1/2 ml-5 mr-5">
+      <mat-label>
+        Tiempo de Cambio de Contexto (ms)
+      </mat-label>
+      <input matInput placeholder="30" #tiempoCambio>
+  </mat-form-field>
+</div>
+<br>
+<br>
+<div class="flex">
+  <div class="mr-5">
+    <button type="button" class="btn btn-success ml-5 procesoA" (click)="agregarProceso()" mat-raised-button color="accent" >Agregar Proceso</button>
+  </div>
+  <div class="mr-5">
+    <button type="button" class=" btn btn-danger ml-5 procesoE"(click)="eliminarProceso()" mat-raised-button color="accent" >Eliminar Proceso</button>
+  </div>
+ </div>
+<br>
+<div *ngFor="let proceso of nProcesos; let i = index" class="input-container flex justify-between">
+  <mat-form-field appearance="outline" class="input w-1/6 ml-5" @fadeIn>
+    <mat-label>Proceso</mat-label>
+    <input matInput placeholder="A" (keyup)="onKeyProceso($event,i)">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="input w-1/6 ml-5" @fadeIn>
+      <mat-label>Tiempo de Ejecución (ms)</mat-label>
+      <input matInput placeholder="20" (keyup)="onKeyTiempoProceso($event,i)">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="input w-1/4 ml-5" @fadeIn>
+      <mat-label>Tiempo de Bloqueo (ms)</mat-label>
+      <input matInput placeholder="20" (keyup)="onKeyTiempoBloqueo($event,i)">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="input w-1/4 ml-5 mr-5" @fadeIn>
+      <mat-label>Tiempo de Inicio (ms)</mat-label>
+      <input matInput placeholder="20" (keyup)="onKeyTiempoInicio($event,i)">
+  </mat-form-field>
+</div>
+<div class = " justify-content-center input-container  flex mt-1">
+  <button type="button" class="btn btn-success rounded-pill boton ml-5" (click)="generarDistribucion(tamQuantum.value,  microprocesadores.value, tiempoCambio.value)" >Generar</button>
+</div>

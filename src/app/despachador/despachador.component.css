@@ -1,0 +1,18 @@
+mat-form-field{
+    color: purple !important;
+}
+
+.input mat-label{
+    color: #748AA1;
+}
+
+.input mat-label label{
+    color: #748AA1;
+}
+
+::placeholder {
+    color: #748AA1 !important;
+}
+.titulo {
+  font-size: 47px;
+}
