@@ -11,6 +11,7 @@ import {
   transition,
   // ...
 } from '@angular/animations';
+// Variable que no se utiliza.
 const URL = 'http://localhost:4000/api/upload';
 @Component({
   selector: 'app-despachador',
@@ -27,19 +28,20 @@ const URL = 'http://localhost:4000/api/upload';
   ],
 })
 export class DespachadorComponent implements OnInit {
-  //Instancia  de FileUploader que recibe en constructor URL y alías.
+  //Instancia  de FileUploader que recibe en constructor (URL y alías.)
+  // Objeto es para servidor.
   public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // Declaración de Variables para Uso General.
-  // Se declaran todas las variables de Públicas para que el HTML tenga Acceso a Estas.
+  // Se declaran todas las variables Públicas para que el HTML tenga Acceso a Estas.
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   public nProcesos = [] ;
   public procesos : string[] = [];
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   // Variables de tipo Array.
   // Explicación: Se declaran de esta forma debido a cada proceso (A, B, C, D, ..., X)
-  // tendrá su propio tiempo de Ejecución, Tiempo de Bloque y Tiempo de tiempoInicio
-  // es decir, variables con lugar [0] => A, [1] => B, de esta forma siguiendo un
+  // tendrá su propio tiempo de Ejecución, Tiempo de Bloqueo y Tiempo de tiempoInicio
+  // es decir, variable que va con el lugar [0] => A, [1] => B, de esta forma siguiendo un
   // patrón consecutivo.
   public tiempoEjecucion : number[] = [];
   public tiempoBloqueo : number[] = [];
@@ -66,11 +68,16 @@ export class DespachadorComponent implements OnInit {
   public tiempoInicioMicroprocesador : number[] = [];
   public tiempoFinalMicroprocesador : number[] = [];
   public tiempoDeVencimientoDeQuantumMicroprocesador : number[] = [];
+  // Variable de tipo arreglo de string.
+  // Explicación: Se declaran de esta forma debido a las líneas de texto
+  // se registrarán en forma de arreglo, la línea 1 de texto corresponde al
+  // lugar 0 y así consecutivamente.
   public texto : String[] = [];
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   constructor() { }
   //Método On Init
   ngOnInit() {
+    // Método pero de servidor.
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
          console.log('ImageUpload:uploaded:', item, status, response);
@@ -94,6 +101,8 @@ export class DespachadorComponent implements OnInit {
     }
     this.texto = loads;
   }
+  // Método de lectura de archivo, cuando la varible this.texto
+  // ya obtuvo la información del archivo que el usuario subió.
   lecturaArchivo(arregloInformacion){
     var lineas = arregloInformacion[0].split("\n");
     var variables : any[] = [];
@@ -102,7 +111,6 @@ export class DespachadorComponent implements OnInit {
       variables.push(lineas[i].split(","));
     }
     console.log(variables);
-
   }
   generarDistribucion = (tamQuantum, microprocesadores, tiempoCambio) => {
     // Se llama al método de CleanData para hacer la limpieza e instancia de los valores cada vez
@@ -127,6 +135,7 @@ export class DespachadorComponent implements OnInit {
     }
     var tiemposDistintos : number[] = [];
     tiemposDistintos.push(0);
+    //
     for (let j = 0; j < tiemposDistintos.length; j++) {
       for (let k = 0; k < this.tiempoInicio.length; k++) {
         console.log("Se añade un nuevo valor");
@@ -136,6 +145,7 @@ export class DespachadorComponent implements OnInit {
         }
       }
     }
+    //
     for (let i = 0; i < tiemposDistintos.length; i++) {
         console.log("El " + (i+1) + " tiempo distinto es: " + tiemposDistintos[i]);
     }
@@ -161,20 +171,23 @@ export class DespachadorComponent implements OnInit {
     this.nProcesos.pop();
     this.n = this.nProcesos.length-1;
   }
-  // Métodos que sirven como listeners de los inputs de procesos y tiemposDeEjecución de html.
+  // Métodos que sirven como listeners de los inputs de procesos de html.
   onKeyProceso(event: any ,i:number){
     this.procesos[i] = event.target.value;
     console.log("Se acaba de Añadir un Proceso con un identificador de: " + event.target.value);
   }
+  // Métodos que sirven como listeners de los inputs de los tiempos de ejecución de los procesos de html.
   onKeyTiempoProceso(event: any ,i:number){
     this.tiempoEjecucion[i] = parseInt(event.target.value);
     console.log("Se acaba de Tiempo de Ejecición de un Proceso con un valor de: " + event.target.value);
   }
+  // Métodos que sirven como listeners de los inputs de los tiempos de inicio de los procesos de html.
   onKeyTiempoInicio(event: any ,i:number){
     this.tiempoInicio[i] = parseInt(event.target.value);
     console.log("Instancia: " + i + "VALOR: " + this.tiempoInicio[i])
     console.log("Se acaba de Tiempo de Inicio de un Proceso con un valor de: " + event.target.value);
   }
+  // Métodos que sirven como listeners de los inputs de los tiempos de bloqueo de los procesos de html.
   onKeyTiempoBloqueo(event: any ,i:number){
     this.tiempoBloqueo[i] = parseInt(event.target.value);
     console.log("Se acaba de Tiempo de Bloque de un Proceso con un valor de: " + event.target.value);
