@@ -16,6 +16,7 @@ const URL = 'http://localhost:4000/api/upload';
   selector: 'app-despachador',
   templateUrl: './despachador.component.html',
   styleUrls: ['./despachador.component.css'],
+  // Animación llamada Fade In con siguientes características:
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
@@ -26,24 +27,49 @@ const URL = 'http://localhost:4000/api/upload';
   ],
 })
 export class DespachadorComponent implements OnInit {
-
   //Instancia  de FileUploader que recibe en constructor URL y alías.
   public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
-  // Declaración de Variables para uso general.
-  // Se declaran públicas para que el html tenga acceso a estas.
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // Declaración de Variables para Uso General.
+  // Se declaran todas las variables de Públicas para que el HTML tenga Acceso a Estas.
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   public nProcesos = [] ;
   public procesos : string[] = [];
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // Variables de tipo Array.
+  // Explicación: Se declaran de esta forma debido a cada proceso (A, B, C, D, ..., X)
+  // tendrá su propio tiempo de Ejecución, Tiempo de Bloque y Tiempo de tiempoInicio
+  // es decir, variables con lugar [0] => A, [1] => B, de esta forma siguiendo un
+  // patrón consecutivo.
   public tiempoEjecucion : number[] = [];
   public tiempoBloqueo : number[] = [];
   public tiempoInicio : number[] = [];
+  // Finalización de Declaración de Variables de tipo arreglo para Procesos.
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // Variables únicas de aplicación General.
+  // Explicación: Se declaran las variables de esta forma, debido a que se
+  // aplicarán a toda la lógica de programación.
   public tiempoDeCambioDeContexto : number;
   public procesadores : number;
   public tamQuantum : number;
-  public tablas : any[] = [];
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // Variable que cuenta cuántos procesos hay para analizar.
   public n = 0;
-  public texto : any;
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  // Variables de tipo Array.
+  // Explicación: Se declaran de esta forma debido a cada microprocesador (1, 2, 3, 4, ..., N)
+  // tendrá su propio tiempo inicial y tiempo final
+  // es decir, variables con lugar [0] => 1, [1] => 2, de esta forma siguiendo un
+  // patrón consecutivo..
+  public tiempoInicioMicroprocesador : number[] = [];
+  public tiempoFinalMicroprocesador : number[] = [];
+  public tiempoDeVencimientoDeQuantumMicroprocesador : number[] = [];
+  public texto : String[] = [];
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   constructor() { }
-  //Método  On In
+  //Método On Init
   ngOnInit() {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -68,6 +94,16 @@ export class DespachadorComponent implements OnInit {
     }
     this.texto = loads;
   }
+  lecturaArchivo(arregloInformacion){
+    var lineas = arregloInformacion[0].split("\n");
+    var variables : any[] = [];
+    console.log(variables);
+    for (let i = 0; i < lineas.length; i++) {
+      variables.push(lineas[i].split(","));
+    }
+    console.log(variables);
+
+  }
   generarDistribucion = (tamQuantum, microprocesadores, tiempoCambio) => {
     // Se llama al método de CleanData para hacer la limpieza e instancia de los valores cada vez
     // que se aprete el botón de generar.
@@ -81,10 +117,13 @@ export class DespachadorComponent implements OnInit {
     console.log("El valor de Procesadores es: " + this.procesadores);
     console.log("El tamaño de Quantum es: " + this.tamQuantum);
     console.log("El texto del archivo es: " + this.texto);
-    // Lógica de Programación
+    this.lecturaArchivo(this.texto);
+    // Lógica de Programación, primero se le asignan los valores de 0 a
+    //  tiempos de Inicio y Finales del Microprocesador.
     for (let i = 0; i < this.procesadores; i++) {
-      var tabla : any[] = [];
-      this.tablas.push(tabla);
+        this.tiempoInicioMicroprocesador[i] = 0;
+        this.tiempoFinalMicroprocesador[i] = 0;
+        this.tiempoDeVencimientoDeQuantumMicroprocesador[i] = 0;
     }
     var tiemposDistintos : number[] = [];
     tiemposDistintos.push(0);
