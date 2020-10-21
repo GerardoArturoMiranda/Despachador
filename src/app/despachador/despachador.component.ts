@@ -43,8 +43,10 @@ export class DespachadorComponent implements OnInit {
   // tendrá su propio tiempo de Ejecución, Tiempo de Bloqueo y Tiempo de tiempoInicio
   // es decir, variable que va con el lugar [0] => A, [1] => B, de esta forma siguiendo un
   // patrón consecutivo.
-  public tiempoEjecucion : number[] = [];
+  public fillTiempoCambioContexto : number[] = [];
+  public fillTiempoVencimientoQuantum : number[] = [];
   public tiempoBloqueo : number[] = [];
+  public tiempoEjecucion : number[] = [];
   public tiempoInicio : number[] = [];
   // Finalización de Declaración de Variables de tipo arreglo para Procesos.
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -72,6 +74,7 @@ export class DespachadorComponent implements OnInit {
   // Explicación: Se declaran de esta forma debido a las líneas de texto
   // se registrarán en forma de arreglo, la línea 1 de texto corresponde al
   // lugar 0 y así consecutivamente.
+  // Variables de cálculo.
   public texto : String[] = [];
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   constructor() { }
@@ -121,42 +124,51 @@ export class DespachadorComponent implements OnInit {
     this.procesadores = parseInt(microprocesadores);
     this.tamQuantum = parseInt(tamQuantum);
     // Impresión de valores internos de Typescript en consola.
-    console.log("Tiempo De Cambio De Contexto es: " + this.tiempoDeCambioDeContexto);
+    /*console.log("Tiempo De Cambio De Contexto es: " + this.tiempoDeCambioDeContexto);
     console.log("El valor de Procesadores es: " + this.procesadores);
     console.log("El tamaño de Quantum es: " + this.tamQuantum);
     console.log("El texto del archivo es: " + this.texto);
-    this.lecturaArchivo(this.texto);
+    */
+    //this.lecturaArchivo(this.texto);
     // Lógica de Programación, primero se le asignan los valores de 0 a
     //  tiempos de Inicio y Finales del Microprocesador.
-    for (let i = 0; i < this.procesadores; i++) {
+    /*for (let i = 0; i < this.procesadores; i++) {
         this.tiempoInicioMicroprocesador[i] = 0;
         this.tiempoFinalMicroprocesador[i] = 0;
         this.tiempoDeVencimientoDeQuantumMicroprocesador[i] = 0;
-    }
-    var tiemposDistintos : number[] = [];
-    tiemposDistintos.push(0);
-    //
-    for (let j = 0; j < tiemposDistintos.length; j++) {
-      for (let k = 0; k < this.tiempoInicio.length; k++) {
-        console.log("Se añade un nuevo valor");
-        if(this.tiempoInicio[k] == tiemposDistintos[j]){
+    }*/
+      for (let j = 0; j < this.n-1; j++) {
+        var total = 0;
+        if(j==0){
+          this.fillTiempoCambioContexto[j] = 0;
+          this.tiempoInicioMicroprocesador[j] = 0;
         }else{
-          tiemposDistintos.push(this.tiempoInicio[k]);
+          this.fillTiempoCambioContexto[j] = this.tiempoDeCambioDeContexto;
         }
+        if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || (this.tiempoEjecucion[j] > this.tamQuantum)){
+          var copiaTamQuantum = this.tamQuantum++;
+          this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j]/copiaTamQuantum) * this.tiempoDeCambioDeContexto;
+        }else{
+          this.fillTiempoVencimientoQuantum[j] = 0
+        }
+        if(j>0){
+          this.tiempoInicioMicroprocesador[j] = this.tiempoFinalMicroprocesador[j-1];
+        }
+        this.tiempoFinalMicroprocesador[j] = this.fillTiempoCambioContexto[j] + this.fillTiempoVencimientoQuantum[j] + this.tiempoEjecucion[j] + this.tiempoBloqueo[j] + this.tiempoInicioMicroprocesador[j];
+        console.log(this.fillTiempoVencimientoQuantum[j]);
+        console.log(this.fillTiempoCambioContexto[j]);
+        console.log(this.tiempoInicioMicroprocesador[j]);
+        console.log(this.tiempoFinalMicroprocesador[j]);
       }
     }
-    //
-    for (let i = 0; i < tiemposDistintos.length; i++) {
-        console.log("El " + (i+1) + " tiempo distinto es: " + tiemposDistintos[i]);
-    }
-  }
+
   // Método 'cleanData' para hacer limpieza de valores de las variables e instancias.
  cleanData(){
    this.nProcesos = [];
-   this.procesos = [];
-   this.tiempoEjecucion = [];
-   this.tiempoInicio = [];
-   this.tiempoBloqueo = [];
+   this.tiempoInicioMicroprocesador = [];
+   this.tiempoFinalMicroprocesador = [];
+   this.fillTiempoCambioContexto = [];
+   this.fillTiempoVencimientoQuantum = [];
    this.tiempoDeCambioDeContexto = 0;
    this.procesadores = 0;
    this.tamQuantum = 0;

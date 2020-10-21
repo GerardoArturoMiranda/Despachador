@@ -62,3 +62,29 @@
 <div class = " justify-content-center input-container  flex mt-1">
   <button type="button" class="btn btn-success rounded-pill boton ml-5" (click)="generarDistribucion(tamQuantum.value,  microprocesadores.value, tiempoCambio.value)" >Generar</button>
 </div>
+<br>
+<br>
+<table class="table-fixed m-auto mt-5">
+           <thead>
+             <tr>
+               <th class="w-1/7 px-4 py-2">Proceso</th>
+               <th class="w-1/7 px-4 py-2">Tiempo de Ejecución (ms)</th>
+               <th class="w-1/7 px-4 py-2">Tiempo de C de Contex. (ms)</th>
+               <th class="w-1/7 px-4 py-2">Tiempo Venc. Quantum (ms)</th>
+               <th class="w-1/7 px-4 py-2">Tiempo Bloqueo (ms)</th>
+               <th class="w-1/7 px-4 py-2">Tiempo Inicial (ms)</th>
+               <th class="w-1/7 px-4 py-2">Tiempo Final (ms)</th>
+             </tr>
+           </thead>
+           <tbody *ngFor="let proceso of tiempoInicioMicroprocesador; let i = index" @fadeIn>
+             <tr>
+               <td class="border px-4 py-2">{{procesos[i]}}</td>
+               <td class="border px-4 py-2">{{tiempoEjecucion[i]}}</td>
+               <td class="border px-4 py-2">{{fillTiempoCambioContexto[i]}}</td>
+               <td class="border px-4 py-2">{{fillTiempoVencimientoQuantum[i]}}</td>
+               <td class="border px-4 py-2">{{tiempoBloqueo[i]}}</td>
+               <td class="border px-4 py-2">{{tiempoInicioMicroprocesador[i]}}</td>
+               <td class="border px-4 py-2">{{tiempoFinalMicroprocesador[i]}}</td>
+             </tr>
+           </tbody>
+</table>
