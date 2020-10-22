@@ -1,6 +1,9 @@
 mat-form-field{
     color: purple !important;
 }
+img{
+    width: 840px;
+  }
 
 .input mat-label{
     color: #748AA1;
@@ -21,3 +24,22 @@ mat-form-field{
   width: 100%;
   margin-right: 3%;
 }
+@media only screen and (max-width: 600px) {
+   
+    .procesoA{
+      
+     font-size: 10px;
+      
+    }
+    .procesoE{
+     
+      font-size: 10px;
+    
+    }
+    .mk{
+        width: 100%;
+        height: 60%;
+        font-size: smaller;
+    }
+}
+   
