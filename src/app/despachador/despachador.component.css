@@ -16,3 +16,8 @@ mat-form-field{
 .titulo {
   font-size: 47px;
 }
+
+.button {
+  width: 100%;
+  margin-right: 3%;
+}

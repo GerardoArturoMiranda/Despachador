@@ -45,6 +45,7 @@ export class DespachadorComponent implements OnInit {
   // patrón consecutivo.
   public fillTiempoCambioContexto : number[] = [];
   public fillTiempoVencimientoQuantum : number[] = [];
+  public fillTiempoDeBloqueo : number[] = [];
   public tiempoBloqueo : number[] = [];
   public tiempoEjecucion : number[] = [];
   public tiempoInicio : number[] = [];
@@ -113,9 +114,9 @@ export class DespachadorComponent implements OnInit {
     for (let i = 0; i < lineas.length; i++) {
       variables.push(lineas[i].split(","));
     }
-    console.log(variables);
+    this.texto = variables;
   }
-  generarDistribucion = (tamQuantum, microprocesadores, tiempoCambio) => {
+  generarDistribucion = (tamQuantum, microprocesadores, tiempoCambio, tiempoDeBloque) => {
     // Se llama al método de CleanData para hacer la limpieza e instancia de los valores cada vez
     // que se aprete el botón de generar.
     this.cleanData();
@@ -124,43 +125,62 @@ export class DespachadorComponent implements OnInit {
     this.procesadores = parseInt(microprocesadores);
     this.tamQuantum = parseInt(tamQuantum);
     // Impresión de valores internos de Typescript en consola.
-    /*console.log("Tiempo De Cambio De Contexto es: " + this.tiempoDeCambioDeContexto);
-    console.log("El valor de Procesadores es: " + this.procesadores);
-    console.log("El tamaño de Quantum es: " + this.tamQuantum);
-    console.log("El texto del archivo es: " + this.texto);
-    */
-    //this.lecturaArchivo(this.texto);
-    // Lógica de Programación, primero se le asignan los valores de 0 a
-    //  tiempos de Inicio y Finales del Microprocesador.
-    /*for (let i = 0; i < this.procesadores; i++) {
-        this.tiempoInicioMicroprocesador[i] = 0;
-        this.tiempoFinalMicroprocesador[i] = 0;
-        this.tiempoDeVencimientoDeQuantumMicroprocesador[i] = 0;
-    }*/
-      for (let j = 0; j < this.n-1; j++) {
-        var total = 0;
-        if(j==0){
-          this.fillTiempoCambioContexto[j] = 0;
-          this.tiempoInicioMicroprocesador[j] = 0;
-        }else{
-          this.fillTiempoCambioContexto[j] = this.tiempoDeCambioDeContexto;
-        }
-        if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || (this.tiempoEjecucion[j] > this.tamQuantum)){
-          var copiaTamQuantum = this.tamQuantum++;
-          this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j]/copiaTamQuantum) * this.tiempoDeCambioDeContexto;
-        }else{
-          this.fillTiempoVencimientoQuantum[j] = 0
-        }
-        if(j>0){
-          this.tiempoInicioMicroprocesador[j] = this.tiempoFinalMicroprocesador[j-1];
-        }
-        this.tiempoFinalMicroprocesador[j] = this.fillTiempoCambioContexto[j] + this.fillTiempoVencimientoQuantum[j] + this.tiempoEjecucion[j] + this.tiempoBloqueo[j] + this.tiempoInicioMicroprocesador[j];
-        console.log(this.fillTiempoVencimientoQuantum[j]);
-        console.log(this.fillTiempoCambioContexto[j]);
-        console.log(this.tiempoInicioMicroprocesador[j]);
-        console.log(this.tiempoFinalMicroprocesador[j]);
-      }
+    this.lecturaArchivo(this.texto);
+    for(let i = 0; i < this.texto.length; i++){
+      this.procesos[i] = this.texto[i][0];
+      console.log(this.procesos[i]);
+      this.tiempoEjecucion[i] = parseInt(this.texto[i][1]);
+      console.log(this.tiempoEjecucion[i]);
+      this.tiempoBloqueo[i] = parseInt(this.texto[i][2]);
+      console.log(this.tiempoBloqueo[i]);
+      this.tiempoInicio[i] = parseInt(this.texto[i][3]);
+      console.log(this.tiempoInicio[i]);
     }
+    // Lógica de Programación, primero se le asignan los valores de 0 a
+
+    if (this.procesadores == 1){
+        for (let j = 0; j < this.texto.length; j++) {
+          var total = 0;
+          this.fillTiempoDeBloqueo[j] = tiempoDeBloque * this.tiempoBloqueo[j];
+          if(j==0){
+            this.fillTiempoCambioContexto[j] = 0;
+            this.tiempoInicioMicroprocesador[j] = 0;
+          }else{
+            this.fillTiempoCambioContexto[j] = this.tiempoDeCambioDeContexto;
+          }
+          if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || (this.tiempoEjecucion[j] > this.tamQuantum)){
+            var copiaTamQuantum = this.tamQuantum++;
+            this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j]/copiaTamQuantum) * this.tiempoDeCambioDeContexto;
+          }else{
+            this.fillTiempoVencimientoQuantum[j] = 0
+          }
+          if(j>0){
+            this.tiempoInicioMicroprocesador[j] = this.tiempoFinalMicroprocesador[j-1];
+          }
+          this.tiempoFinalMicroprocesador[j] = this.fillTiempoCambioContexto[j] + this.fillTiempoVencimientoQuantum[j] + this.tiempoEjecucion[j] + this.fillTiempoDeBloqueo[j] + this.tiempoInicioMicroprocesador[j];
+          console.log(this.fillTiempoVencimientoQuantum[j]);
+          console.log(this.fillTiempoCambioContexto[j]);
+          console.log(this.tiempoInicioMicroprocesador[j]);
+          console.log(this.tiempoFinalMicroprocesador[j]);
+        }
+    } else{
+      this.logicaMayorMicroprocesadores(this.procesadores);
+    }
+  }
+
+    // Método de creación de arreglos acorde al número de microprocesadores, recibe  el número y crea arreglos con base en Acceso
+    logicaMayorMicroprocesadores(n){
+      var procesos = {};
+      var tiempoEjecucion = {};
+      var tiempoCambioDeContexto = {};
+      var tiempoVencimientoDeQuantum = {};
+      var tiempoBloqueoM = {};
+      var tiempoInicial = {};
+      var tiempoFinal = {};
+      for (let i = 0; i < n -1; i++){
+
+        }
+      }
 
   // Método 'cleanData' para hacer limpieza de valores de las variables e instancias.
  cleanData(){
@@ -169,6 +189,7 @@ export class DespachadorComponent implements OnInit {
    this.tiempoFinalMicroprocesador = [];
    this.fillTiempoCambioContexto = [];
    this.fillTiempoVencimientoQuantum = [];
+   this.fillTiempoDeBloqueo = [];
    this.tiempoDeCambioDeContexto = 0;
    this.procesadores = 0;
    this.tamQuantum = 0;
@@ -186,7 +207,7 @@ export class DespachadorComponent implements OnInit {
   // Métodos que sirven como listeners de los inputs de procesos de html.
   onKeyProceso(event: any ,i:number){
     this.procesos[i] = event.target.value;
-    console.log("Se acaba de Añadir un Proceso con un identificador de: " + event.target.value);
+    console.log("Se acaba de Añadir un Proceso con un identificador de: " + this.procesos[i]);
   }
   // Métodos que sirven como listeners de los inputs de los tiempos de ejecución de los procesos de html.
   onKeyTiempoProceso(event: any ,i:number){
