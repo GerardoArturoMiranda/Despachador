@@ -11,6 +11,7 @@ import {
   transition,
   // ...
 } from '@angular/animations';
+import { promise } from 'protractor';
 // Variable que no se utiliza.
 const URL = 'http://localhost:4000/api/upload';
 @Component({
@@ -76,6 +77,9 @@ export class DespachadorComponent implements OnInit {
   // lugar 0 y así consecutivamente.
   // Variables de cálculo.
   public texto : String[] = [];
+  // array de los datos o inputs
+ public datatype:any[][];
+ 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   constructor() { }
   //Método On Init
@@ -160,6 +164,7 @@ export class DespachadorComponent implements OnInit {
         console.log(this.tiempoInicioMicroprocesador[j]);
         console.log(this.tiempoFinalMicroprocesador[j]);
       }
+     this.agrupar();
     }
 
   // Método 'cleanData' para hacer limpieza de valores de las variables e instancias.
@@ -204,4 +209,52 @@ export class DespachadorComponent implements OnInit {
     this.tiempoBloqueo[i] = parseInt(event.target.value);
     console.log("Se acaba de Tiempo de Bloque de un Proceso con un valor de: " + event.target.value);
   }
+
+  
+  agrupar(){
+    
+    var procesos1:number[]=[];
+    var procesos2:number[]=[];
+    var procesos3:number[]=[];
+    var procesos4:number[]=[];
+    var procesos5:number[]=[];
+
+    for(let i=0;i<this.n-1;i++){
+      if(this.tiempoInicio[i]==0){
+        
+        procesos1[i]=i;
+      console.log(" indice procesos1:"+ procesos1);
+
+      }
+      if(this.tiempoInicio[i]==1500){
+        
+        procesos2[i]=i;
+      console.log(" indice procesos2:"+ procesos2);
+
+      }
+      if(this.tiempoInicio[i]==3000){
+        
+        procesos3[i]=i;
+      console.log("indice procesos3"+ procesos3);
+
+      }
+      if(this.tiempoInicio[i]==4000){
+        
+        procesos4[i]=i;
+      console.log(" indice procesos4"+ procesos4);
+
+      }
+      if(this.tiempoInicio[i]==8000){
+        
+        procesos5[i]=i;
+      console.log("indice procesos5"+ procesos5);
+
+      }
+
+    }
+
+  }
+ 
+ 
+  
 }
