@@ -80,7 +80,6 @@ export class DespachadorComponent implements OnInit {
   public texto : String[] = [];
   // array de los datos o inputs
  public datatype:any[][];
- 
   // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
   constructor() { }
   //Método On Init
@@ -129,22 +128,28 @@ export class DespachadorComponent implements OnInit {
     this.procesadores = parseInt(microprocesadores);
     this.tamQuantum = parseInt(tamQuantum);
     // Impresión de valores internos de Typescript en consola.
-    this.lecturaArchivo(this.texto);
-    for(let i = 0; i < this.texto.length; i++){
-      this.procesos[i] = this.texto[i][0];
-      console.log(this.procesos[i]);
-      this.tiempoEjecucion[i] = parseInt(this.texto[i][1]);
-      console.log(this.tiempoEjecucion[i]);
-      this.tiempoBloqueo[i] = parseInt(this.texto[i][2]);
-      console.log(this.tiempoBloqueo[i]);
-      this.tiempoInicio[i] = parseInt(this.texto[i][3]);
-      console.log(this.tiempoInicio[i]);
+    if(this.n < 1){
+      this.lecturaArchivo(this.texto);
+      for(let i = 0; i < this.texto.length; i++){
+        this.procesos[i] = this.texto[i][0];
+        console.log(this.procesos[i]);
+        this.tiempoEjecucion[i] = parseInt(this.texto[i][1]);
+        console.log(this.tiempoEjecucion[i]);
+        this.tiempoBloqueo[i] = parseInt(this.texto[i][2]);
+        console.log(this.tiempoBloqueo[i]);
+        this.tiempoInicio[i] = parseInt(this.texto[i][3]);
+        console.log(this.tiempoInicio[i]);
+      }
     }
-    
     // Lógica de Programación, primero se le asignan los valores de 0 a
-
+    var limite2 = 0;
+    if(this.n < 1){
+      limite2 = this.texto.length;
+    }else{
+      limite2 = this.n-1;
+    }
     if (this.procesadores == 1){
-        for (let j = 0; j < this.texto.length; j++) {
+        for (let j = 0; j < limite2; j++) {
           var total = 0;
           this.fillTiempoDeBloqueo[j] = tiempoDeBloque * this.tiempoBloqueo[j];
           if(j==0){
@@ -167,9 +172,7 @@ export class DespachadorComponent implements OnInit {
           console.log(this.fillTiempoCambioContexto[j]);
           console.log(this.tiempoInicioMicroprocesador[j]);
           console.log(this.tiempoFinalMicroprocesador[j]);
-
         }
-
     } else{
       this.logicaMayorMicroprocesadores(this.procesadores);
     }
@@ -186,11 +189,8 @@ export class DespachadorComponent implements OnInit {
       var tiempoInicial = {};
       var tiempoFinal = {};
       for (let i = 0; i < n -1; i++){
-
         }
       }
-     
-    
 
   // Método 'cleanData' para hacer limpieza de valores de las variables e instancias.
  cleanData(){
@@ -235,52 +235,39 @@ export class DespachadorComponent implements OnInit {
     this.tiempoBloqueo[i] = parseInt(event.target.value);
     console.log("Se acaba de Tiempo de Bloque de un Proceso con un valor de: " + event.target.value);
   }
-
-  
   agrupar(){
-    
     var procesos1:number[]=[];
     var procesos2:number[]=[];
     var procesos3:number[]=[];
     var procesos4:number[]=[];
     var procesos5:number[]=[];
-
-    for(let i=0;i<this.n-1;i++){
+    var limite = 0;
+    if(this.n < 1){
+      limite = this.texto.length;
+    }else{
+      limite = this.n;
+    }
+    for(let i=0;i<limite;i++){
       if(this.tiempoInicio[i]==0){
-        
-        procesos1[i]=i;
+      procesos1[i]=i;
       console.log(" indice procesos1:"+ procesos1);
-
       }
       if(this.tiempoInicio[i]==1500){
-        
-        procesos2[i]=i;
+      procesos2[i]=i;
       console.log(" indice procesos2:"+ procesos2);
-
       }
       if(this.tiempoInicio[i]==3000){
-        
-        procesos3[i]=i;
+      procesos3[i]=i;
       console.log("indice procesos3"+ procesos3);
-
       }
       if(this.tiempoInicio[i]==4000){
-        
-        procesos4[i]=i;
+      procesos4[i]=i;
       console.log(" indice procesos4"+ procesos4);
-
       }
       if(this.tiempoInicio[i]==8000){
-        
-        procesos5[i]=i;
+      procesos5[i]=i;
       console.log("indice procesos5"+ procesos5);
-
       }
-
     }
-
   }
- 
- 
-  
 }
