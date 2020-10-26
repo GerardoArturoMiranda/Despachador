@@ -59,8 +59,8 @@
       <input matInput placeholder="20" (keyup)="onKeyTiempoProceso($event,i)">
   </mat-form-field>
   <mat-form-field appearance="outline" class="input w-1/4 ml-5" @fadeIn>
-      <mat-label>Tiempo de Bloqueo (ms)</mat-label>
-      <input matInput placeholder="20" (keyup)="onKeyTiempoBloqueo($event,i)">
+      <mat-label>Cantidad de Bloqueos</mat-label>
+      <input matInput placeholder="1" (keyup)="onKeyTiempoBloqueo($event,i)">
   </mat-form-field>
   <mat-form-field appearance="outline" class="input w-1/4 ml-5 mr-5" @fadeIn>
       <mat-label>Tiempo de Inicio (ms)</mat-label>
@@ -73,6 +73,7 @@
 </div>
 <br>
 <br>
+<div *ngIf="after0" >
 <table class="table-fixed m-auto mt-5 mk">
            <thead>
              <tr>
@@ -97,3 +98,37 @@
              </tr>
            </tbody>
 </table>
+</div>
+<br>
+<div *ngIf="after" >
+  <table class="table-fixed m-auto mt-5 mk" *ngFor="let x of [].constructor(procesadores); let k = index" @fadeIn>
+              <br>
+              <span class="spanBig">Procesador: {{k+1}}</span>
+              <br>
+              <br>
+             <thead>
+               <tr>
+                 <th class="w-1/7 px-4 py-2">Proceso</th>
+                 <th class="w-1/7 px-4 py-2">Tiempo de Ejecución (ms)</th>
+                 <th class="w-1/5 px-4 py-2">Tiempo de C de Contex. (ms)</th>
+                 <th class="w-1/5 px-4 py-2">Tiempo Venc. Quantum (ms)</th>
+                 <th class="w-1/5 px-4 py-2">Tiempo Bloqueo (ms)</th>
+                 <th class="w-1/5 px-4 py-2">Tiempo Inicial (ms)</th>
+                 <th class="w-1/5 px-4 py-2">Tiempo Final (ms)</th>
+               </tr>
+             </thead>
+             <tbody *ngFor="let elemento of tiempoCambioDeContextoD[k]; let i = index">
+               <tr>
+                 <td class="border px-4 py-2">{{procesosD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoEjecucionD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoCambioDeContextoD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoVencimientoDeQuantumD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoBloqueoMD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoInicialD[k][i]}}</td>
+                 <td class="border px-4 py-2">{{tiempoFinalD[k][i]}}</td>
+               </tr>
+             </tbody>
+  </table>
+    <br>
+    <br>
+</div>
