@@ -25,16 +25,16 @@ img{
   margin-right: 3%;
 }
 @media only screen and (max-width: 600px) {
-   
+
     .procesoA{
-      
+
      font-size: 10px;
-      
+
     }
     .procesoE{
-     
+
       font-size: 10px;
-    
+
     }
     .mk{
         width: 100%;
@@ -42,4 +42,9 @@ img{
         font-size: smaller;
     }
 }
-   
+.spanBig {
+  font-size: 20px;
+  color: red;
+  width: 400px;
+  left: 10%;
+}
