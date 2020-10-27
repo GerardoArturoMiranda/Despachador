@@ -165,6 +165,10 @@ export class DespachadorComponent implements OnInit {
       var i = 0;
       var rondas = 0;
       var n = this.procesadores;
+      var segundoCC = false;
+      var terceroCC = false;
+      var cuartoCC = false;
+      var quintoCC = false;
     for(let k = 0; k < n +1; k++ ){
       this.procesosD[k] = [];
       this.tiempoEjecucionD[k] = [];
@@ -258,9 +262,14 @@ export class DespachadorComponent implements OnInit {
         this.tiempoBloqueoMD[i].push(tiempoDeBloque * this.tiempoBloqueo[proceso])
         console.log("Se ha añadido un tiempo de bloqueo, al arreglo: " + this.tiempoBloqueoMD[i] + " que corresponde al procesador: " + i);
         if(this.peek(this.tiempoFinalD[i]) != null){
-          console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
-          this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
-          console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            if(segundoCC==false){
+              this.tiempoCambioDeContextoD[i].push(0);
+              segundoCC = true;
+            }else{
+              console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
+              this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
+              console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            }
           }else{
             console.log("*Dado que es el primer proceso que entra en el procesador " + i + " se realiza lo siguiente:");
             this.tiempoCambioDeContextoD[i].push(0);
@@ -279,11 +288,15 @@ export class DespachadorComponent implements OnInit {
               console.log("Se ha añadido un tiempo de vencimiento de quantum, al arreglo: " + this.tiempoVencimientoDeQuantumD[i] + " que corresponde al procesador: " + i);
           }
           if(this.peek(this.tiempoFinalD[i]) > 0){
-                console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
                 var temporal = this.peek(this.tiempoFinalD[i]);
+                if(temporal < 1500 ){
+                  this.tiempoInicialD[i].push(1500);
+                }else{
+                console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
                 console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
                 this.tiempoInicialD[i].push(temporal);
                 console.log(this.tiempoInicialD[i]);
+                }
           }
           console.log("*Dado a que se han calculado todos los tiempos, se saca el final:");
           this.tiempoFinalD[i].push(this.peek(this.tiempoCambioDeContextoD[i]) + this.peek(this.tiempoVencimientoDeQuantumD[i]) + this.tiempoEjecucion[proceso] + this.peek(this.tiempoBloqueoMD[i]) + this.peek(this.tiempoInicialD[i]));
@@ -332,9 +345,14 @@ export class DespachadorComponent implements OnInit {
         this.tiempoBloqueoMD[i].push(tiempoDeBloque * this.tiempoBloqueo[proceso])
         console.log("Se ha añadido un tiempo de bloqueo, al arreglo: " + this.tiempoBloqueoMD[i] + " que corresponde al procesador: " + i);
         if(this.peek(this.tiempoFinalD[i]) != null){
-          console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
-          this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
-          console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            if(terceroCC==false){
+              this.tiempoCambioDeContextoD[i].push(0);
+              terceroCC = true;
+            }else{
+              console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
+              this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
+              console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            }
           }else{
             console.log("*Dado que es el primer proceso que entra en el procesador " + i + " se realiza lo siguiente:");
             this.tiempoCambioDeContextoD[i].push(0);
@@ -353,11 +371,15 @@ export class DespachadorComponent implements OnInit {
               console.log("Se ha añadido un tiempo de vencimiento de quantum, al arreglo: " + this.tiempoVencimientoDeQuantumD[i] + " que corresponde al procesador: " + i);
           }
           if(this.peek(this.tiempoFinalD[i]) > 0){
-                console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
-                var temporal = this.peek(this.tiempoFinalD[i]);
-                console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
-                this.tiempoInicialD[i].push(temporal);
-                console.log(this.tiempoInicialD[i]);
+            var temporal = this.peek(this.tiempoFinalD[i]);
+            if(temporal < 3000 ){
+              this.tiempoInicialD[i].push(3000);
+            }else{
+            console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
+            console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
+            this.tiempoInicialD[i].push(temporal);
+            console.log(this.tiempoInicialD[i]);
+            }
           }
           console.log("*Dado a que se han calculado todos los tiempos, se saca el final:");
           this.tiempoFinalD[i].push(this.peek(this.tiempoCambioDeContextoD[i]) + this.peek(this.tiempoVencimientoDeQuantumD[i]) + this.tiempoEjecucion[proceso] + this.peek(this.tiempoBloqueoMD[i]) + this.peek(this.tiempoInicialD[i]));
@@ -406,9 +428,14 @@ export class DespachadorComponent implements OnInit {
         this.tiempoBloqueoMD[i].push(tiempoDeBloque * this.tiempoBloqueo[proceso])
         console.log("Se ha añadido un tiempo de bloqueo, al arreglo: " + this.tiempoBloqueoMD[i] + " que corresponde al procesador: " + i);
         if(this.peek(this.tiempoFinalD[i]) != null){
-          console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
-          this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
-          console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            if(cuartoCC==false){
+              this.tiempoCambioDeContextoD[i].push(0);
+              cuartoCC = true;
+            }else{
+              console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
+              this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
+              console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            }
           }else{
             console.log("*Dado que es el primer proceso que entra en el procesador " + i + " se realiza lo siguiente:");
             this.tiempoCambioDeContextoD[i].push(0);
@@ -427,11 +454,15 @@ export class DespachadorComponent implements OnInit {
               console.log("Se ha añadido un tiempo de vencimiento de quantum, al arreglo: " + this.tiempoVencimientoDeQuantumD[i] + " que corresponde al procesador: " + i);
           }
           if(this.peek(this.tiempoFinalD[i]) > 0){
-                console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
-                var temporal = this.peek(this.tiempoFinalD[i]);
-                console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
-                this.tiempoInicialD[i].push(temporal);
-                console.log(this.tiempoInicialD[i]);
+            var temporal = this.peek(this.tiempoFinalD[i]);
+            if(temporal < 4000 ){
+              this.tiempoInicialD[i].push(4000);
+            }else{
+            console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
+            console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
+            this.tiempoInicialD[i].push(temporal);
+            console.log(this.tiempoInicialD[i]);
+            }
           }
           console.log("*Dado a que se han calculado todos los tiempos, se saca el final:");
           this.tiempoFinalD[i].push(this.peek(this.tiempoCambioDeContextoD[i]) + this.peek(this.tiempoVencimientoDeQuantumD[i]) + this.tiempoEjecucion[proceso] + this.peek(this.tiempoBloqueoMD[i]) + this.peek(this.tiempoInicialD[i]));
@@ -480,9 +511,14 @@ export class DespachadorComponent implements OnInit {
         this.tiempoBloqueoMD[i].push(tiempoDeBloque * this.tiempoBloqueo[proceso])
         console.log("Se ha añadido un tiempo de bloqueo, al arreglo: " + this.tiempoBloqueoMD[i] + " que corresponde al procesador: " + i);
         if(this.peek(this.tiempoFinalD[i]) != null){
-          console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
-          this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
-          console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            if(quintoCC==false){
+              this.tiempoCambioDeContextoD[i].push(0);
+              quintoCC = true;
+            }else{
+              console.log("*Dado que NO es el primer procesos que entra en el procesador " + i + " se realiza lo siguiente:");
+              this.tiempoCambioDeContextoD[i].push(this.tiempoDeCambioDeContexto);
+              console.log("Se ha añadido un tiempo de cambio de contexto, al arreglo: " + this.tiempoCambioDeContextoD[i] + " que corresponde al procesador: " + i);
+            }
           }else{
             console.log("*Dado que es el primer proceso que entra en el procesador " + i + " se realiza lo siguiente:");
             this.tiempoCambioDeContextoD[i].push(0);
@@ -501,11 +537,14 @@ export class DespachadorComponent implements OnInit {
               console.log("Se ha añadido un tiempo de vencimiento de quantum, al arreglo: " + this.tiempoVencimientoDeQuantumD[i] + " que corresponde al procesador: " + i);
           }
           if(this.peek(this.tiempoFinalD[i]) > 0){
-                console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
-                var temporal = this.peek(this.tiempoFinalD[i]);
-                console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
-                this.tiempoInicialD[i].push(temporal);
-                console.log(this.tiempoInicialD[i]);
+            if(temporal < 8000 ){
+              this.tiempoInicialD[i].push(8000);
+            }else{
+            console.log("*Dado a que el proceso NO es el primero en ser analizado en el procesador, se realiza lo siguiente:");
+            console.log("Se ha añadido un tiempo inicial que corresponde al final del mismo procesador, es decir:");
+            this.tiempoInicialD[i].push(temporal);
+            console.log(this.tiempoInicialD[i]);
+            }
           }
           console.log("*Dado a que se han calculado todos los tiempos, se saca el final:");
           this.tiempoFinalD[i].push(this.peek(this.tiempoCambioDeContextoD[i]) + this.peek(this.tiempoVencimientoDeQuantumD[i]) + this.tiempoEjecucion[proceso] + this.peek(this.tiempoBloqueoMD[i]) + this.peek(this.tiempoInicialD[i]));
