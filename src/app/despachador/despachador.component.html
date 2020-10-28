@@ -39,8 +39,11 @@
   </mat-form-field>
 </div>
 <br>
+<label class="ml-5 checboxAE">
+  <input type="checkbox" [(ngModel)]="showhideAgregarEliminarProceso"/>  Agregar procesos manualmente
+</label>
 <br>
-<div class="flex">
+<div class="flex" *ngIf="showhideAgregarEliminarProceso">
   <div class="mr-5">
     <button type="button" class="btn btn-success ml-5 procesoA" (click)="agregarProceso()" mat-raised-button color="accent" >Agregar Proceso</button>
   </div>
@@ -73,7 +76,7 @@
 </div>
 <br>
 <br>
-<div *ngIf="after0" >
+<div *ngIf="after0" class="m-1">
 <table class="table-fixed m-auto mt-5 mk">
            <thead>
              <tr>
@@ -100,7 +103,7 @@
 </table>
 </div>
 <br>
-<div *ngIf="after" >
+<div *ngIf="after" class="m-5">
   <table class="table-fixed m-auto mt-5 mk" *ngFor="let x of [].constructor(procesadores); let k = index" @fadeIn>
               <br>
               <span class="spanBig">Procesador: {{k+1}}</span>

@@ -24,6 +24,17 @@ img{
   width: 100%;
   margin-right: 3%;
 }
+.checboxAE{
+  color: #748AA1 !important;
+
+}
+table{
+  margin: 1%;
+}
+tr{
+  margin: 1%;
+
+}
 @media only screen and (max-width: 600px) {
 
     .procesoA{

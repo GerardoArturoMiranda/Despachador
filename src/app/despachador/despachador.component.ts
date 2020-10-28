@@ -63,7 +63,8 @@ export class DespachadorComponent implements OnInit {
   public procesos2:number[]=[];
   public procesos3:number[]=[];
   public procesos4:number[]=[];
-  public procesos5:number[]=[];
+  public procesos5: number[] = [];
+  public showhideAgregarEliminarProceso: boolean;
   constructor() { }
   //Método On Init
   ngOnInit() {
@@ -143,16 +144,19 @@ export class DespachadorComponent implements OnInit {
           }else{
             this.fillTiempoCambioContexto[j] = this.tiempoDeCambioDeContexto;
           }
-          if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || (this.tiempoEjecucion[j] > this.tamQuantum)){
+          if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || 
+          (this.tiempoEjecucion[j] > this.tamQuantum)){
             var copiaTamQuantum = this.tamQuantum++;
-            this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j]/copiaTamQuantum) * this.tiempoDeCambioDeContexto;
+            this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j] / copiaTamQuantum) *
+              this.tiempoDeCambioDeContexto;
           }else{
             this.fillTiempoVencimientoQuantum[j] = 0
           }
           if(j>0){
             this.tiempoInicioMicroprocesador[j] = this.tiempoFinalMicroprocesador[j-1];
           }
-          this.tiempoFinalMicroprocesador[j] = this.fillTiempoCambioContexto[j] + this.fillTiempoVencimientoQuantum[j] + this.tiempoEjecucion[j] + this.fillTiempoDeBloqueo[j] + this.tiempoInicioMicroprocesador[j];
+          this.tiempoFinalMicroprocesador[j] = this.fillTiempoCambioContexto[j] + this.fillTiempoVencimientoQuantum[j] +
+          this.tiempoEjecucion[j] + this.fillTiempoDeBloqueo[j] + this.tiempoInicioMicroprocesador[j];
           console.log(this.fillTiempoVencimientoQuantum[j]);
           console.log(this.fillTiempoCambioContexto[j]);
           console.log(this.tiempoInicioMicroprocesador[j]);
