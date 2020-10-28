@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload';
 // Constante que indica el path de la api en el  puerto 4000.
 // Importación de animaciones
+import { MatSnackBar } from "@angular/material/snack-bar";
 import {
   trigger,
   state,
@@ -65,7 +66,7 @@ export class DespachadorComponent implements OnInit {
   public procesos4:number[]=[];
   public procesos5: number[] = [];
   public showhideAgregarEliminarProceso: boolean;
-  constructor() { }
+  constructor(public snackBarError: MatSnackBar) { }
   //Método On Init
   ngOnInit() {
     // Método pero de servidor.
@@ -106,8 +107,24 @@ export class DespachadorComponent implements OnInit {
   generarDistribucion = (tamQuantum, microprocesadores, tiempoCambio, tiempoDeBloque) => {
     // Se llama al método de CleanData para hacer la limpieza e instancia de los valores cada vez
     // que se aprete el botón de generar.
-    this.cleanData();
+        this.cleanData();
+        if(tamQuantum <= 0){
+        this.openErrorDialog('El tamaño de quantum debe ser mayor a 0');
 
+        return false;
+      }
+      if(microprocesadores <= 0){
+      this.openErrorDialog('El número de microprocesadores no puede ser  menor o igual a  0');
+      return false;
+      }
+      if(tiempoCambio <= 0){
+      this.openErrorDialog('El tiempo de Cambio de Contexto debe ser mayor a 0');
+      return false;
+      }
+      if(tiempoDeBloque <= 0){
+      this.openErrorDialog('El tiempo de Bloqueo debe ser mayor a 0');
+      return false;
+      }
     // Llenado de variables publicas del Typescript con las variables externas del html.
     this.tiempoDeCambioDeContexto = parseInt(tiempoCambio);
     this.procesadores = parseInt(microprocesadores);
@@ -144,7 +161,7 @@ export class DespachadorComponent implements OnInit {
           }else{
             this.fillTiempoCambioContexto[j] = this.tiempoDeCambioDeContexto;
           }
-          if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) || 
+          if((this.tiempoEjecucion[j]%this.tamQuantum != 0 && this.tiempoEjecucion[j]>this.tamQuantum) ||
           (this.tiempoEjecucion[j] > this.tamQuantum)){
             var copiaTamQuantum = this.tamQuantum++;
             this.fillTiempoVencimientoQuantum[j] = Math.floor(this.tiempoEjecucion[j] / copiaTamQuantum) *
@@ -693,4 +710,10 @@ export class DespachadorComponent implements OnInit {
   }
   return min;
   };
+  openErrorDialog(error){
+  this.snackBarError.open("Error: "+ error, "", {
+    duration: 6000,
+    panelClass: 'error-snackbar'
+  });
+}
 }

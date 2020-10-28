@@ -14,6 +14,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 // C O M P O N E N T E S
 import { AppComponent } from './app.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { DespachadorComponent } from './despachador/despachador.component';
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DespachadorComponent } from './despachador/despachador.component';
     FileUploadModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
